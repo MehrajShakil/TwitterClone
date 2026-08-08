@@ -8,6 +8,8 @@ namespace TwitterClone.Domain.Entities
         private string _comment;
         private DateTime _createdAt;
         private DateTime _modifiedAt;
+        private Guid _createdBy;
+        private Guid _modifiedBy;
 
         public Retweet()
         {
@@ -47,6 +49,18 @@ namespace TwitterClone.Domain.Entities
         {
             get { return _modifiedAt; }
             set { _modifiedAt = value; }
+        }
+
+        public Guid CreatedBy
+        {
+            get { return _createdBy; }
+            set { _createdBy = value; }
+        }
+
+        public Guid ModifiedBy
+        {
+            get { return _modifiedBy; }
+            set { _modifiedBy = value; }
         }
 
     }
