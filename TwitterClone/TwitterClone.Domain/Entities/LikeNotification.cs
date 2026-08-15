@@ -21,10 +21,11 @@ namespace TwitterClone.Domain.Entities
             Message = message;
         }
 
-        public override string DescribeRecord()
+       
+
+        public override string GetMessage()
         {
-            var baseRecord = base.DescribeRecord();
-            return $"{baseRecord}, LikeByUserId: {LikeByUserId}";
+            return $"User with ID {LikeByUserId} liked your post.";
         }
     }
 }
