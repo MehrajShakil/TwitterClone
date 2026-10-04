@@ -1,6 +1,82 @@
 @TwitterClone.Api_HostAddress = http://localhost:5047
+@userId = 00000000-0000-0000-0000-000000000000
+@tweetId = 00000000-0000-0000-0000-000000000000
 
-GET {{TwitterClone.Api_HostAddress}}/weatherforecast/
+### Users
+
+GET {{TwitterClone.Api_HostAddress}}/api/users
 Accept: application/json
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "email": "jane@example.com"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/users/{{userId}}
+
+###
+
+PUT {{TwitterClone.Api_HostAddress}}/api/users/{{userId}}
+Content-Type: application/json
+
+{
+  "firstName": "Janet",
+  "lastName": "Doe"
+}
+
+###
+
+PATCH {{TwitterClone.Api_HostAddress}}/api/users/{{userId}}/phoneNumber
+Content-Type: application/json
+
+"+1 555 123 4567"
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/users/{{userId}}
+
+### Tweets
+
+GET {{TwitterClone.Api_HostAddress}}/api/tweets
+Accept: application/json
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/tweets?userId={{userId}}
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/tweets
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "content": "Hello, world!"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/tweets/{{tweetId}}
+
+###
+
+PUT {{TwitterClone.Api_HostAddress}}/api/tweets/{{tweetId}}
+Content-Type: application/json
+
+{
+  "content": "Hello again, world!"
+}
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/tweets/{{tweetId}}
 
 ###
