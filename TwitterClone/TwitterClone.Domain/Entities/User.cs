@@ -11,6 +11,7 @@
         private string _firstName;
         private string _lastName;
         private string _email;
+        private string? _phoneNumber;
 
 
         public string FirstName
@@ -31,13 +32,19 @@
             set { _email = value; }
         }
 
+        public string? PhoneNumber
+        {
+            get { return _phoneNumber; }
+            set { _phoneNumber = value; }
+        }
+
         private List<Guid> _followers = new List<Guid>();
         private List<Guid> _inComingNotifications = new List<Guid>();
 
         public override string DescribeRecord()
         {
             var baseRecord = base.DescribeRecord();
-            return $"{baseRecord}, FirstName: {FirstName}, LastName: {LastName}, Email: {Email}";
+            return $"{baseRecord}, FirstName: {FirstName}, LastName: {LastName}, Email: {Email}, PhoneNumber: {PhoneNumber}";
         }
 
         public void Follow(Guid userId)
