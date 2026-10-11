@@ -9,13 +9,22 @@ namespace TwitterClone.Application.Services
     {
         private readonly ITweetRepository _tweetRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ILikeRepository _likeRepository;
+        private readonly IBookmarkRepository _bookmarkRepository;
+        private readonly IRetweetRepository _retweetRepository;
 
         public TweetService(
             ITweetRepository tweetRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ILikeRepository likeRepository,
+            IBookmarkRepository bookmarkRepository,
+            IRetweetRepository retweetRepository)
         {
             _tweetRepository = tweetRepository;
             _userRepository = userRepository;
+            _likeRepository = likeRepository;
+            _bookmarkRepository = bookmarkRepository;
+            _retweetRepository = retweetRepository;
         }
 
         public TweetDto? CreateTweet(CreateTweetDto createTweetDto)
@@ -88,6 +97,11 @@ namespace TwitterClone.Application.Services
             {
                 return false;
             }
+
+            // Likes, bookmarks and retweets can't outlive the tweet they point at.
+            _likeRepository.DeleteLikesByTweetId(id);
+            _bookmarkRepository.DeleteBookmarksByTweetId(id);
+            _retweetRepository.DeleteRetweetsByTweetId(id);
 
             return _tweetRepository.DeleteTweet(tweet);
         }

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using TwitterClone.Application.Dtos;
+using TwitterClone.Application.Interfaces;
 
 namespace TwitterClone.Api.Controllers
 {
@@ -9,85 +11,87 @@ namespace TwitterClone.Api.Controllers
     public class RetweetsController : ControllerBase
     {
 
-        public RetweetsController() { }
+        private readonly IRetweetService _retweetService;
+
+        public RetweetsController(
+            IRetweetService retweetService)
+        {
+            _retweetService = retweetService;
+        }
 
 
         // GET /api/retweets?userId={userId}&tweetId={tweetId}
         [HttpGet]
+        [ProducesResponseType(typeof(List<RetweetDto>), StatusCodes.Status200OK)]
         public IActionResult GetRetweets([FromQuery] Guid? userId, [FromQuery] Guid? tweetId)
         {
-            return Ok(new List<object>
-            {
-                new
-                {
-                    RetweetId = Guid.NewGuid(),
-                    UserId = userId ?? Guid.NewGuid(),
-                    TweetId = tweetId ?? Guid.NewGuid(),
-                    Comment = "Great point!",
-                    CreatedAt = DateTime.UtcNow.AddHours(-3),
-                },
-                new
-                {
-                    RetweetId = Guid.NewGuid(),
-                    UserId = userId ?? Guid.NewGuid(),
-                    TweetId = tweetId ?? Guid.NewGuid(),
-                    Comment = "",
-                    CreatedAt = DateTime.UtcNow.AddHours(-1),
-                },
-            });
+            return Ok(_retweetService.GetRetweets(userId, tweetId));
         }
 
         // GET /api/retweets/{id}
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(RetweetDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetRetweetById([FromRoute] Guid id)
         {
-            return Ok(new
+            var retweet = _retweetService.GetRetweetById(id);
+
+            if (retweet == null)
             {
-                RetweetId = id,
-                UserId = Guid.NewGuid(),
-                TweetId = Guid.NewGuid(),
-                Comment = "retweet" + id.ToString(),
-                CreatedAt = DateTime.UtcNow,
-            });
+                return NotFound();
+            }
+
+            return Ok(retweet);
         }
 
         // POST /api/retweets
         [HttpPost]
-        public IActionResult CreateRetweet()
+        [ProducesResponseType(typeof(RetweetDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult CreateRetweet([FromBody] CreateRetweetDto createRetweetDto)
         {
-            return Ok(new
+            var createdRetweet = _retweetService.CreateRetweet(createRetweetDto);
+
+            if (createdRetweet == null)
             {
-                RetweetId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
-                TweetId = Guid.NewGuid(),
-                Comment = "New retweet comment.",
-                CreatedAt = DateTime.UtcNow,
-            });
+                // The comment is already validated by [ApiController], so the only failure left is an unknown user or tweet.
+                return BadRequest("The user or the tweet does not exist.");
+            }
+
+            return CreatedAtAction(nameof(GetRetweetById), new { id = createdRetweet.Id }, createdRetweet);
         }
 
         // PUT /api/retweets/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateRetweet([FromRoute] Guid id)
+        [ProducesResponseType(typeof(RetweetDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdateRetweet([FromRoute] Guid id, [FromBody] UpdateRetweetDto updateRetweetDto)
         {
-            return Ok(new
+            var retweet = _retweetService.UpdateRetweet(id, updateRetweetDto);
+
+            if (retweet == null)
             {
-                RetweetId = id,
-                UserId = Guid.NewGuid(),
-                TweetId = Guid.NewGuid(),
-                Comment = "updatedcomment" + id.ToString(),
-                ModifiedAt = DateTime.UtcNow,
-            });
+                return NotFound();
+            }
+
+            return Ok(retweet);
         }
 
         // DELETE /api/retweets/{id}
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult DeleteRetweet([FromRoute] Guid id)
         {
-            return Ok(new
+            var isDeleted = _retweetService.DeleteRetweet(id);
+
+            if (isDeleted == false)
             {
-                RetweetId = id,
-                Message = "Retweet removed successfully.",
-            });
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

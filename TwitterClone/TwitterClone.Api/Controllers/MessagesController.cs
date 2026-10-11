@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using TwitterClone.Application.Dtos;
+using TwitterClone.Application.Interfaces;
 
 namespace TwitterClone.Api.Controllers
 {
@@ -9,127 +11,111 @@ namespace TwitterClone.Api.Controllers
     public class MessagesController : ControllerBase
     {
 
-        public MessagesController() { }
+        private readonly IMessageService _messageService;
+
+        public MessagesController(
+            IMessageService messageService)
+        {
+            _messageService = messageService;
+        }
 
 
         // GET /api/messages?senderId={senderId}&receiverId={receiverId}
         [HttpGet]
+        [ProducesResponseType(typeof(List<MessageDto>), StatusCodes.Status200OK)]
         public IActionResult GetMessages([FromQuery] Guid? senderId, [FromQuery] Guid? receiverId)
         {
-            return Ok(new List<object>
-            {
-                new
-                {
-                    MessageId = Guid.NewGuid(),
-                    SenderId = senderId ?? Guid.NewGuid(),
-                    ReceiverId = receiverId ?? Guid.NewGuid(),
-                    Content = "Hey, how are you?",
-                    SentAt = DateTime.UtcNow.AddMinutes(-15),
-                    IsRead = true,
-                },
-                new
-                {
-                    MessageId = Guid.NewGuid(),
-                    SenderId = senderId ?? Guid.NewGuid(),
-                    ReceiverId = receiverId ?? Guid.NewGuid(),
-                    Content = "Did you see my latest tweet?",
-                    SentAt = DateTime.UtcNow.AddMinutes(-5),
-                    IsRead = false,
-                },
-            });
+            return Ok(_messageService.GetMessages(senderId, receiverId));
         }
 
         // GET /api/messages/{id}
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(MessageDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetMessageById([FromRoute] Guid id)
         {
-            return Ok(new
+            var message = _messageService.GetMessageById(id);
+
+            if (message == null)
             {
-                MessageId = id,
-                SenderId = Guid.NewGuid(),
-                ReceiverId = Guid.NewGuid(),
-                Content = "message" + id.ToString(),
-                SentAt = DateTime.UtcNow,
-                IsRead = false,
-            });
+                return NotFound();
+            }
+
+            return Ok(message);
         }
 
         // GET /api/messages/conversation?userId={userId}&otherUserId={otherUserId}
         [HttpGet("conversation")]
+        [ProducesResponseType(typeof(List<MessageDto>), StatusCodes.Status200OK)]
         public IActionResult GetConversation([FromQuery] Guid userId, [FromQuery] Guid otherUserId)
         {
-            return Ok(new List<object>
-            {
-                new
-                {
-                    MessageId = Guid.NewGuid(),
-                    SenderId = userId,
-                    ReceiverId = otherUserId,
-                    Content = "Hi!",
-                    SentAt = DateTime.UtcNow.AddMinutes(-10),
-                    IsRead = true,
-                },
-                new
-                {
-                    MessageId = Guid.NewGuid(),
-                    SenderId = otherUserId,
-                    ReceiverId = userId,
-                    Content = "Hello back!",
-                    SentAt = DateTime.UtcNow.AddMinutes(-8),
-                    IsRead = false,
-                },
-            });
+            return Ok(_messageService.GetConversation(userId, otherUserId));
         }
 
         // POST /api/messages
         [HttpPost]
-        public IActionResult SendMessage()
+        [ProducesResponseType(typeof(MessageDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult SendMessage([FromBody] CreateMessageDto createMessageDto)
         {
-            return Ok(new
+            var sentMessage = _messageService.SendMessage(createMessageDto);
+
+            if (sentMessage == null)
             {
-                MessageId = Guid.NewGuid(),
-                SenderId = Guid.NewGuid(),
-                ReceiverId = Guid.NewGuid(),
-                Content = "New message content.",
-                SentAt = DateTime.UtcNow,
-                IsRead = false,
-            });
+                // Content is already validated by [ApiController], so what is left is an unknown user or messaging yourself.
+                return BadRequest("Both users must exist, and a user cannot message themselves.");
+            }
+
+            return CreatedAtAction(nameof(GetMessageById), new { id = sentMessage.Id }, sentMessage);
         }
 
         // PUT /api/messages/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateMessage([FromRoute] Guid id)
+        [ProducesResponseType(typeof(MessageDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdateMessage([FromRoute] Guid id, [FromBody] UpdateMessageDto updateMessageDto)
         {
-            return Ok(new
+            var message = _messageService.UpdateMessage(id, updateMessageDto);
+
+            if (message == null)
             {
-                MessageId = id,
-                SenderId = Guid.NewGuid(),
-                ReceiverId = Guid.NewGuid(),
-                Content = "updatedmessage" + id.ToString(),
-                ModifiedAt = DateTime.UtcNow,
-            });
+                return NotFound();
+            }
+
+            return Ok(message);
         }
 
         // PATCH /api/messages/{id}/read
         [HttpPatch("{id}/read")]
+        [ProducesResponseType(typeof(MessageDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult MarkMessageAsRead([FromRoute] Guid id)
         {
-            return Ok(new
+            var message = _messageService.MarkMessageAsRead(id);
+
+            if (message == null)
             {
-                MessageId = id,
-                IsRead = true,
-            });
+                return NotFound();
+            }
+
+            return Ok(message);
         }
 
         // DELETE /api/messages/{id}
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult DeleteMessage([FromRoute] Guid id)
         {
-            return Ok(new
+            var isDeleted = _messageService.DeleteMessage(id);
+
+            if (isDeleted == false)
             {
-                MessageId = id,
-                Message = "Message deleted successfully.",
-            });
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
