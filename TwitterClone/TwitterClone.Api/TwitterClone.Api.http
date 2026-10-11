@@ -1,6 +1,8 @@
 @TwitterClone.Api_HostAddress = http://localhost:5047
 @userId = 00000000-0000-0000-0000-000000000000
 @tweetId = 00000000-0000-0000-0000-000000000000
+@otherUserId = 00000000-0000-0000-0000-000000000000
+@id = 00000000-0000-0000-0000-000000000000
 
 ### Users
 
@@ -78,5 +80,184 @@ Content-Type: application/json
 ###
 
 DELETE {{TwitterClone.Api_HostAddress}}/api/tweets/{{tweetId}}
+
+###
+
+### Likes
+
+GET {{TwitterClone.Api_HostAddress}}/api/likes?userId={{userId}}&tweetId={{tweetId}}
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/likes
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "tweetId": "{{tweetId}}"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/likes/{{id}}
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/likes/{{id}}
+
+### Bookmarks
+
+GET {{TwitterClone.Api_HostAddress}}/api/bookmarks?userId={{userId}}
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/bookmarks
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "tweetId": "{{tweetId}}"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/bookmarks/{{id}}
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/bookmarks/{{id}}
+
+### Retweets
+
+GET {{TwitterClone.Api_HostAddress}}/api/retweets?userId={{userId}}&tweetId={{tweetId}}
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/retweets
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "tweetId": "{{tweetId}}",
+  "comment": "Great point!"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/retweets/{{id}}
+
+###
+
+PUT {{TwitterClone.Api_HostAddress}}/api/retweets/{{id}}
+Content-Type: application/json
+
+{
+  "comment": "Even better on a second read."
+}
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/retweets/{{id}}
+
+### Follows
+
+GET {{TwitterClone.Api_HostAddress}}/api/follows?followerId={{userId}}&followingId={{otherUserId}}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/follows/followers/{{userId}}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/follows/following/{{userId}}
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/follows
+Content-Type: application/json
+
+{
+  "followerId": "{{userId}}",
+  "followingId": "{{otherUserId}}"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/follows/{{id}}
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/follows/{{id}}
+
+### Messages
+
+GET {{TwitterClone.Api_HostAddress}}/api/messages?senderId={{userId}}&receiverId={{otherUserId}}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/messages/conversation?userId={{userId}}&otherUserId={{otherUserId}}
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/messages
+Content-Type: application/json
+
+{
+  "senderId": "{{userId}}",
+  "receiverId": "{{otherUserId}}",
+  "content": "Hey, how are you?"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/messages/{{id}}
+
+###
+
+PUT {{TwitterClone.Api_HostAddress}}/api/messages/{{id}}
+Content-Type: application/json
+
+{
+  "content": "Hey, how are you doing?"
+}
+
+###
+
+PATCH {{TwitterClone.Api_HostAddress}}/api/messages/{{id}}/read
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/messages/{{id}}
+
+### Notifications
+
+GET {{TwitterClone.Api_HostAddress}}/api/notifications?userId={{userId}}&type=Like&isRead=false
+
+###
+
+POST {{TwitterClone.Api_HostAddress}}/api/notifications
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "type": "Like",
+  "triggeredByUserId": "{{otherUserId}}"
+}
+
+###
+
+GET {{TwitterClone.Api_HostAddress}}/api/notifications/{{id}}
+
+###
+
+PATCH {{TwitterClone.Api_HostAddress}}/api/notifications/{{id}}/read
+
+###
+
+PATCH {{TwitterClone.Api_HostAddress}}/api/notifications/read-all?userId={{userId}}
+
+###
+
+DELETE {{TwitterClone.Api_HostAddress}}/api/notifications/{{id}}
 
 ###

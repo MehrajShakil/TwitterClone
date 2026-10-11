@@ -9,13 +9,34 @@ namespace TwitterClone.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ITweetRepository _tweetRepository;
+        private readonly ITweetService _tweetService;
+        private readonly ILikeRepository _likeRepository;
+        private readonly IBookmarkRepository _bookmarkRepository;
+        private readonly IRetweetRepository _retweetRepository;
+        private readonly IFollowRepository _followRepository;
+        private readonly IMessageRepository _messageRepository;
+        private readonly INotificationRepository _notificationRepository;
 
         public UserService(
             IUserRepository userRepository,
-            ITweetRepository tweetRepository)
+            ITweetRepository tweetRepository,
+            ITweetService tweetService,
+            ILikeRepository likeRepository,
+            IBookmarkRepository bookmarkRepository,
+            IRetweetRepository retweetRepository,
+            IFollowRepository followRepository,
+            IMessageRepository messageRepository,
+            INotificationRepository notificationRepository)
         {
             _userRepository = userRepository;
             _tweetRepository = tweetRepository;
+            _tweetService = tweetService;
+            _likeRepository = likeRepository;
+            _bookmarkRepository = bookmarkRepository;
+            _retweetRepository = retweetRepository;
+            _followRepository = followRepository;
+            _messageRepository = messageRepository;
+            _notificationRepository = notificationRepository;
         }
 
         public UserDto? CreateUser(CreateUserDto createUserDto)
@@ -53,8 +74,20 @@ namespace TwitterClone.Application.Services
                 return false;
             }
 
-            // A user's tweets can't outlive the user.
-            _tweetRepository.DeleteTweetsByUserId(id);
+            // A user's tweets can't outlive the user. Going through the tweet service
+            // also removes the likes, bookmarks and retweets other users left on them.
+            foreach (var tweet in _tweetRepository.GetTweetsByUserId(id))
+            {
+                _tweetService.DeleteTweet(tweet.Id);
+            }
+
+            // Neither can the user's own activity and relationships.
+            _likeRepository.DeleteLikesByUserId(id);
+            _bookmarkRepository.DeleteBookmarksByUserId(id);
+            _retweetRepository.DeleteRetweetsByUserId(id);
+            _followRepository.DeleteFollowsByUserId(id);
+            _messageRepository.DeleteMessagesByUserId(id);
+            _notificationRepository.DeleteNotificationsByUserId(id);
 
             return _userRepository.DeleteUser(user);
         }
