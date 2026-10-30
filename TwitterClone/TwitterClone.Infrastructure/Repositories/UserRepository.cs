@@ -1,16 +1,25 @@
 ﻿using TwitterClone.Application.Interfaces;
 using TwitterClone.Domain.Entities;
+using TwitterClone.Infrastructure.Persistence;
 
 namespace TwitterClone.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        private readonly TwitterCloneDbContext _context;
+
+        public UserRepository(
+            TwitterCloneDbContext context)
+        {
+            _context = context;
+        }
 
         private readonly List<User> _users = new List<User>();
 
         public User AddUser(User user)
         {
-            _users.Add(user);
+            _context.Users.Add(user);
+            _context.SaveChanges();
 
             return user;
         }
