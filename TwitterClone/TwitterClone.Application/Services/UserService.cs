@@ -16,6 +16,7 @@ namespace TwitterClone.Application.Services
         private readonly IFollowRepository _followRepository;
         private readonly IMessageRepository _messageRepository;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IPasswordHasher _passwordHasher;
 
         public UserService(
             IUserRepository userRepository,
@@ -26,7 +27,8 @@ namespace TwitterClone.Application.Services
             IRetweetRepository retweetRepository,
             IFollowRepository followRepository,
             IMessageRepository messageRepository,
-            INotificationRepository notificationRepository)
+            INotificationRepository notificationRepository,
+            IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
             _tweetRepository = tweetRepository;
@@ -37,6 +39,7 @@ namespace TwitterClone.Application.Services
             _followRepository = followRepository;
             _messageRepository = messageRepository;
             _notificationRepository = notificationRepository;
+            _passwordHasher = passwordHasher;
         }
 
         public UserDto? CreateUser(CreateUserDto createUserDto)
@@ -59,7 +62,8 @@ namespace TwitterClone.Application.Services
             {
                 FirstName = createUserDto.FirstName.Trim(),
                 LastName = createUserDto.LastName.Trim(),
-                Email = createUserDto.Email.Trim()
+                Email = createUserDto.Email.Trim(),
+                PasswordHash = _passwordHasher.Hash(createUserDto.ToDto(), createUserDto.Password),
             });
 
             return createdUser.ToDto();
