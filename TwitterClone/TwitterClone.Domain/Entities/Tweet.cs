@@ -31,6 +31,8 @@ namespace TwitterClone.Domain.Entities
             set { _userId = value; }
         }
 
+        public User User { get; set; }
+
         public string Content
         {
             get { return _content; }
