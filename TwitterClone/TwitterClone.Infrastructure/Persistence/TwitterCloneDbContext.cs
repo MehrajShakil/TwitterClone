@@ -11,6 +11,7 @@ namespace TwitterClone.Infrastructure.Persistence
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Tweet> Tweets { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

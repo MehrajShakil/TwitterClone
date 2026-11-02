@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TwitterClone.Application.Dtos;
 using TwitterClone.Application.Interfaces;
@@ -8,6 +9,7 @@ namespace TwitterClone.Api.Controllers
     // api/notifications
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotificationsController : ControllerBase
     {
 
