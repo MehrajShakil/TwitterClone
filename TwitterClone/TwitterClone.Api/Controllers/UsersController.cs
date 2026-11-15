@@ -10,7 +10,7 @@ namespace TwitterClone.Api.Controllers
     // api/users
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
+    [Authorize]
     public class UsersController : ControllerBase
     {
 
@@ -25,7 +25,6 @@ namespace TwitterClone.Api.Controllers
 
         // GET /api/users
         [HttpGet]
-        [AllowAnonymous]
         [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
         public IActionResult GetUsers()
         {
