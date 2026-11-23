@@ -9,5 +9,9 @@
         public string? PhoneNumber { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Bio { get; set; } = string.Empty;
+        public string? AvatarUrl { get; set; }
+
     }
 }
