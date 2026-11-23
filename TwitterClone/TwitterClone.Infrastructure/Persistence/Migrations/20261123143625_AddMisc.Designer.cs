@@ -12,7 +12,7 @@ using TwitterClone.Infrastructure.Persistence;
 namespace TwitterClone.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(TwitterCloneDbContext))]
-    [Migration("20261123143134_AddMisc")]
+    [Migration("20261123143625_AddMisc")]
     partial class AddMisc
     {
         /// <inheritdoc />
@@ -59,21 +59,21 @@ namespace TwitterClone.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = new Guid("9f073bd3-26f4-45a7-92bc-3acac0bfe715"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 6, DateTimeKind.Utc).AddTicks(3432),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "users.read"
                         },
                         new
                         {
                             Id = new Guid("3150d14e-1881-4b28-a637-85b070c77f07"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 6, DateTimeKind.Utc).AddTicks(3436),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "users.delete"
                         },
                         new
                         {
                             Id = new Guid("3f4a3310-b7e6-4680-94da-9f37833b4113"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 6, DateTimeKind.Utc).AddTicks(3437),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "roles.manage"
                         });
@@ -113,21 +113,21 @@ namespace TwitterClone.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = new Guid("dc85b434-de09-44e5-9ed1-5886e21421ae"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 6, DateTimeKind.Utc).AddTicks(7249),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Admin"
                         },
                         new
                         {
                             Id = new Guid("784c2c7c-f2a0-4050-b3f7-0b20e21d46e3"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 6, DateTimeKind.Utc).AddTicks(7253),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Moderator"
                         },
                         new
                         {
                             Id = new Guid("b6bbbcd6-0705-4373-bd09-d7df25cca2df"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 6, DateTimeKind.Utc).AddTicks(7254),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "User"
                         });
@@ -169,42 +169,42 @@ namespace TwitterClone.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = new Guid("0985ea89-e859-421c-ac32-d25ae956464e"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 7, DateTimeKind.Utc).AddTicks(3186),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            PermissionId = new Guid("b28c66e9-370b-40c0-8bee-a43fcf5cad10"),
-                            RoleId = new Guid("b9c3c1c2-1fe9-4385-80b8-3602519c70c2")
+                            PermissionId = new Guid("9f073bd3-26f4-45a7-92bc-3acac0bfe715"),
+                            RoleId = new Guid("dc85b434-de09-44e5-9ed1-5886e21421ae")
                         },
                         new
                         {
                             Id = new Guid("1401901b-3fe6-4e3f-9854-9c31338de432"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 7, DateTimeKind.Utc).AddTicks(3190),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            PermissionId = new Guid("a007cd34-8644-471c-8aaf-0cf221cccdcf"),
-                            RoleId = new Guid("9b0cf57f-f06c-4f38-a64c-626e286ae1e6")
-                        },
-                        new
-                        {
-                            Id = new Guid("dbf270d8-faf9-4f66-a180-72f543824190"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 7, DateTimeKind.Utc).AddTicks(3205),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            PermissionId = new Guid("7f56f21c-81b1-4706-b947-b4d825552cc2"),
-                            RoleId = new Guid("d6aa296d-cb5f-4c14-be5b-023b04e343ed")
+                            PermissionId = new Guid("3150d14e-1881-4b28-a637-85b070c77f07"),
+                            RoleId = new Guid("dc85b434-de09-44e5-9ed1-5886e21421ae")
                         },
                         new
                         {
                             Id = new Guid("3850ecbd-8ed0-4f76-a437-e566fd5ed490"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 7, DateTimeKind.Utc).AddTicks(3207),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            PermissionId = new Guid("084dfdbe-909e-4423-adec-027692690573"),
-                            RoleId = new Guid("aeb89635-4a54-44e1-b0a5-90ddc6b7b469")
+                            PermissionId = new Guid("3f4a3310-b7e6-4680-94da-9f37833b4113"),
+                            RoleId = new Guid("dc85b434-de09-44e5-9ed1-5886e21421ae")
                         },
                         new
                         {
                             Id = new Guid("9f09f2e7-1255-4c97-8a05-3369f1b6290f"),
-                            CreatedAt = new DateTime(2026, 11, 23, 14, 31, 34, 7, DateTimeKind.Utc).AddTicks(3210),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            PermissionId = new Guid("c4644d27-fa19-4707-af85-16dba948937d"),
-                            RoleId = new Guid("9551b8e4-082b-4c00-9bc6-b0d8a182a9cc")
+                            PermissionId = new Guid("9f073bd3-26f4-45a7-92bc-3acac0bfe715"),
+                            RoleId = new Guid("784c2c7c-f2a0-4050-b3f7-0b20e21d46e3")
+                        },
+                        new
+                        {
+                            Id = new Guid("dbf270d8-faf9-4f66-a180-72f543824190"),
+                            CreatedAt = new DateTime(2026, 11, 23, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
+                            PermissionId = new Guid("3150d14e-1881-4b28-a637-85b070c77f07"),
+                            RoleId = new Guid("784c2c7c-f2a0-4050-b3f7-0b20e21d46e3")
                         });
                 });
 
