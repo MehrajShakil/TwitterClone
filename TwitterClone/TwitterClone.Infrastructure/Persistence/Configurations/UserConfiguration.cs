@@ -14,6 +14,8 @@ namespace TwitterClone.Infrastructure.Persistence.Configurations
             builder.Property(u => u.LastName).IsRequired();
             builder.Property(u => u.Email).IsRequired();
             builder.Property(u => u.PasswordHash).IsRequired();
+            builder.HasMany(u => u.UserRoles).WithOne(ur => ur.User)
+                .HasForeignKey(u => u.UserId);
 
 
             builder.HasIndex(u => u.Email).IsUnique();
