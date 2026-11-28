@@ -45,6 +45,10 @@
             set { _passwordHash = value;  }
         }
 
+        public string Username { get; set; } = string.Empty;
+        public string Bio { get; set; } = string.Empty;
+        public string? AvatarUrl { get; set; } = string.Empty;
+
         public List<UserRole> UserRoles { get; set; }
 
         private List<Guid> _followers = new List<Guid>();

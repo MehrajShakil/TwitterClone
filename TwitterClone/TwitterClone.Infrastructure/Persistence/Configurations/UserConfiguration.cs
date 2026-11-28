@@ -17,6 +17,9 @@ namespace TwitterClone.Infrastructure.Persistence.Configurations
             builder.HasMany(u => u.UserRoles).WithOne(ur => ur.User)
                 .HasForeignKey(u => u.UserId);
 
+            builder.Property(u => u.Username).IsRequired().HasMaxLength(15);
+            builder.Property(u => u.Bio).HasMaxLength(160);
+            builder.Property(u => u.AvatarUrl).HasMaxLength(200);
 
             builder.HasIndex(u => u.Email).IsUnique();
         }
